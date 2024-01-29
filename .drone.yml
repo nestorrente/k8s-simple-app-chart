@@ -1,0 +1,94 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: lint
+    # TODO update to the latest version
+    image: alpine/helm:3.2.1
+    commands:
+      - helm lint --strict .
+  - name: package
+    # TODO update to the latest version
+    image: alpine/helm:3.2.1
+    commands:
+      - helm package . --destination .deploy
+    when:
+      branch:
+        - main
+      event:
+        - push
+  - name: release
+    # TODO update to the latest version
+    image: quay.io/helmpack/chart-releaser:v1.0.0-beta.1
+    environment:
+      CR_OWNER: ${DRONE_REPO_OWNER}
+      CR_GIT_REPO: ${DRONE_REPO_NAME}
+      CR_PACKAGE_PATH: .deploy
+      CR_TOKEN:
+        from_secret: cr_gh_token
+    commands:
+      - cr upload
+    when:
+      branch:
+        - main
+      event:
+        - push
+  - name: checkout gh-pages
+    image: alpine/git
+    commands:
+      - git fetch origin gh-pages
+      - git checkout -t origin/gh-pages
+    when:
+      branch:
+        - main
+      event:
+        - push
+  - name: update index.yaml
+    # TODO update to the latest version
+    image: quay.io/helmpack/chart-releaser:v1.0.0-beta.1
+    environment:
+      CR_OWNER: ${DRONE_REPO_OWNER}
+      CR_GIT_REPO: ${DRONE_REPO_NAME}
+      CR_PACKAGE_PATH: .deploy
+      CR_TOKEN:
+        from_secret: cr_gh_token
+    commands:
+      - cr index -i ./index.yaml -c https://nestorrente.github.io/k8s-simple-app-chart/
+      - cat ./index.yaml
+    when:
+      branch:
+        - main
+      event:
+        - push
+#  - name: push index.yaml
+#    image: plugins/gh-pages
+#    settings:
+#      username: nestorrente
+#      password:
+#        from_secret: github_password
+#      pages_directory: .
+#    when:
+#      branch:
+#        - main
+#      event:
+#        - push
+  - name: push index.yaml
+    image: alpine/git
+    environment:
+      GH_TOKEN:
+        from_secret: cr_gh_token
+    commands:
+      - git add index.yaml
+      - git commit -m "Update index.yaml"
+      - git config --global user.name "nestorrente"
+      - git config --global user.email "nestorrente@gmail.com"
+      - git remote set-url origin https://nestorrente:$GH_TOKEN@github.com/nestorrente/k8s-simple-app-chart.git
+      - git push origin gh-pages
+    when:
+      branch:
+        - main
+      event:
+        - push
+...
