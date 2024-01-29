@@ -1,0 +1,4 @@
+apiVersion: v1
+entries:
+  k8s-simple-app:
+generated: "2024-02-13T21:12:00.000000000Z"
