@@ -1,0 +1,16 @@
+apiVersion: v2
+name: k8s-simple-app
+version: 0.1.0
+type: application
+description: A Helm chart for deploying applications to Kubernetes following common best practices
+home: https://nestorrente.github.io/k8s-application-chart/
+sources:
+  - https://github.com/nestorrente/k8s-application-chart
+maintainers:
+  - name: Néstor Pérez González
+    email: nestorrente@gmail.com
+    url: https://github.com/nestorrente
+keywords:
+  - kubernetes
+  - microservices
+icon: https://kubernetes.io/images/kubernetes-192x192.png

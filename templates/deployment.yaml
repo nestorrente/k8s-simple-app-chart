@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.deployment.replicas }}
+  {{- if eq (.Values.deployment.replicas | int) 1 }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+      serving: "true"
+  template:
+    metadata:
+      name: {{ .Release.Name }}
+      labels:
+        app: {{ .Release.Name }}
+        serving: "true"
+    spec:
+      {{- if .Values.deployment.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.deployment.imagePullSecrets }}
+        - name: {{ . }}
+        {{- end }}
+      {{- end }}
+      containers:
+        - image: {{ printf "%s:%s" (required "Image has to be provided" .Values.deployment.image) (required "Image tag has to be provided" .Values.deployment.tag) | quote }}
+          name: {{ .Release.Name }}
+          ports:
+            - containerPort: {{ .Values.deployment.containerPort }}
+              name: http
+              protocol: TCP
