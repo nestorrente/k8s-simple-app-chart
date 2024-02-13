@@ -16,7 +16,7 @@ steps:
       - helm package . --destination .deploy
     when:
       branch:
-        - master
+        - main
       event:
         - push
   - name: release
@@ -27,12 +27,12 @@ steps:
       CR_GIT_REPO: ${DRONE_REPO_NAME}
       CR_PACKAGE_PATH: .deploy
       CR_TOKEN:
-        from_secret: CR_TOKEN
+        from_secret: cr_gh_token
     commands:
       - cr upload
     when:
       branch:
-        - master
+        - main
       event:
         - push
   - name: checkout gh-pages
@@ -42,7 +42,7 @@ steps:
       - git checkout -t origin/gh-pages
     when:
       branch:
-        - master
+        - main
       event:
         - push
   - name: update index.yaml
@@ -53,13 +53,13 @@ steps:
       CR_GIT_REPO: ${DRONE_REPO_NAME}
       CR_PACKAGE_PATH: .deploy
       CR_TOKEN:
-        from_secret: CR_TOKEN
+        from_secret: cr_gh_token
     commands:
-      - cr index -i ./index.yaml -c https://nestorrente.github.io/k8s-application-chart/
+      - cr index -i ./index.yaml -c https://nestorrente.github.io/k8s-simple-app-chart/
       - cat ./index.yaml
     when:
       branch:
-        - master
+        - main
       event:
         - push
   - name: push index.yaml
@@ -71,11 +71,7 @@ steps:
       pages_directory: .
     when:
       branch:
-        - master
+        - main
       event:
         - push
----
-kind: signature
-hmac: b329c70430212c5820d186caaf715cd0af85aa11b599ec78d07fc4a29178a999
-
 ...
