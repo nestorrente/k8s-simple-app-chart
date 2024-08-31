@@ -34,3 +34,15 @@ spec:
             - containerPort: {{ .Values.deployment.containerPort }}
               name: http
               protocol: TCP
+          {{- if .Values.deployment.sharedVolume }}
+          volumeMounts:
+            - name: shared-volume
+              mountPath: {{ required "mounthPath of the sharedVolume needs to be provided" .Values.deployment.sharedVolume.mountPath }}
+          {{- end }}
+      {{- if .Values.deployment.sharedVolume }}
+      volumes:
+        - name: shared-volume
+          hostPath:
+            path: {{ required "hostPath of the sharedVolume needs to be provided" .Values.deployment.sharedVolume.hostPath }}
+            type: Directory
+      {{- end }}
