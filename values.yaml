@@ -8,6 +8,9 @@ deployment:
   imagePullSecrets: []
   image: ""
   tag: ""
+  sharedVolume:
+      hostPath: ""
+      mountPath: ""
 
 service:
   port: 80
