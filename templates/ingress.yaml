@@ -24,13 +24,18 @@ spec:
     - host: {{ include "k8s-simple-app.fullDomain" . }}
       http:
         paths:
+          {{- if .Values.ingress.pathPrefixes }}
+          {{- range .Values.ingress.pathPrefixes }}
+          - backend:
+              serviceName: {{ $.Release.Name }}
+              servicePort: http
+            path: {{ . }}
+            pathType: Prefix
+          {{- end }}
+          {{- else }}
           - backend:
               serviceName: {{ .Release.Name }}
               servicePort: http
-            {{- if .Values.ingress.pathPrefix }}
-            path: {{ .Values.ingress.pathPrefix }}
-            pathType: Prefix
-            {{- else }}
             path: /
             {{- end }}
 {{- end }}
