@@ -27,5 +27,10 @@ spec:
           - backend:
               serviceName: {{ .Release.Name }}
               servicePort: http
+            {{- if .Values.ingress.pathPrefix }}
+            path: {{ .Values.ingress.pathPrefix }}
+            pathType: Prefix
+            {{- else }}
             path: /
+            {{- end }}
 {{- end }}
