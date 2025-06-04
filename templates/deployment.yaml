@@ -34,15 +34,15 @@ spec:
             - containerPort: {{ .Values.deployment.containerPort }}
               name: http
               protocol: TCP
+              {{- if .Values.deployment.env }}
+              env:
+                {{- toYaml .Values.deployment.env | nindent 16 }}
+              {{- end }}
           {{- if and .Values.deployment.sharedVolume .Values.deployment.sharedVolume.hostPath }}
           volumeMounts:
             - name: shared-volume
               mountPath: {{ required "mounthPath of the sharedVolume needs to be provided" .Values.deployment.sharedVolume.mountPath }}
           {{- end }}
-      {{- if .Values.deployment.env }}
-      env:
-        {{- toYaml .Values.deployment.env | nindent 8 }}
-      {{- end }}
       {{- if and .Values.deployment.sharedVolume .Values.deployment.sharedVolume.mountPath }}
       volumes:
         - name: shared-volume
