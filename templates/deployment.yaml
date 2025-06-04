@@ -40,6 +40,10 @@ spec:
               mountPath: {{ required "mounthPath of the sharedVolume needs to be provided" .Values.deployment.sharedVolume.mountPath }}
           {{- end }}
       {{- if and .Values.deployment.sharedVolume .Values.deployment.sharedVolume.mountPath }}
+      {{- if .Values.deployment.env }}
+      env:
+        {{- toYaml .Values.deployment.env | nindent 8 }}
+      {{- end }}
       volumes:
         - name: shared-volume
           hostPath:
