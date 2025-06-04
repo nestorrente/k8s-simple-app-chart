@@ -13,3 +13,5 @@
 !templates
 !templates/**
 !LICENSE
+!test-values.yaml
+!test.sh

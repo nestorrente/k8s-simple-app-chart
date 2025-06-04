@@ -1,0 +1,19 @@
+# https://helm.sh/docs/chart_template_guide/values_files/
+
+deployment:
+  replicas: 1
+  containerPort: 8080
+  imagePullSecrets: []
+  image: "test-image:latest"
+  tag: "latest"
+  env:
+    - name: ENV_VAR_1
+      value: "value for env var 1"
+    - name: ENV_VAR_2
+      valueFrom:
+        secretKeyRef:
+          name: my-secret
+          key: env_var_2
+#  sharedVolume:
+#      hostPath: "/host/path/to/shared/volume"
+#      mountPath: "/mount/path/in/container"
