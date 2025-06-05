@@ -1,6 +1,6 @@
 apiVersion: v2
 name: k8s-simple-app
-version: 0.2.8
+version: 0.2.9
 type: application
 description: A Helm chart for deploying simple applications to Kubernetes (service, deployment and ingress).
 home: https://nestorrente.github.io/k8s-application-chart/
