@@ -6,7 +6,7 @@ deployment:
   imagePullSecrets: []
   image: "test-image:latest"
   tag: "latest"
-  env:
+  environment:
     - name: ENV_VAR_1
       value: "value for env var 1"
     - name: ENV_VAR_2

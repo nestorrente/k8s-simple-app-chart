@@ -30,14 +30,14 @@ spec:
       containers:
         - image: {{ printf "%s:%s" (required "Image has to be provided" .Values.deployment.image) (required "Image tag has to be provided" .Values.deployment.tag) | quote }}
           name: {{ .Release.Name }}
+          {{- if .Values.deployment.environment }}
+          env:
+            {{- toYaml .Values.deployment.environment | nindent 12 }}
+          {{- end }}
           ports:
             - containerPort: {{ .Values.deployment.containerPort }}
               name: http
               protocol: TCP
-          {{- if .Values.deployment.env }}
-          env:
-            {{- toYaml .Values.deployment.env | nindent 12 }}
-          {{- end }}
           {{- if and .Values.deployment.sharedVolume .Values.deployment.sharedVolume.hostPath }}
           volumeMounts:
             - name: shared-volume
