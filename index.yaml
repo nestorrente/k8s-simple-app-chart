@@ -2,6 +2,27 @@ apiVersion: v1
 entries:
   k8s-simple-app:
   - apiVersion: v2
+    created: "2025-08-01T19:31:21.54939285Z"
+    description: A Helm chart for deploying simple applications to Kubernetes (service,
+      deployment and ingress).
+    digest: 6dff4e30836f3f7cc0787ef761387e0563d2af87bac3ad949690bf1e475b0fcc
+    home: https://nestorrente.github.io/k8s-application-chart/
+    icon: https://kubernetes.io/images/kubernetes-192x192.png
+    keywords:
+    - kubernetes
+    - microservices
+    maintainers:
+    - email: nestorrente@gmail.com
+      name: Néstor Pérez González
+      url: https://github.com/nestorrente
+    name: k8s-simple-app
+    sources:
+    - https://github.com/nestorrente/k8s-application-chart
+    type: application
+    urls:
+    - https://github.com/nestorrente/k8s-simple-app-chart/releases/download/k8s-simple-app-0.3.0/k8s-simple-app-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
     created: "2025-06-05T19:44:32.480419714Z"
     description: A Helm chart for deploying simple applications to Kubernetes (service,
       deployment and ingress).
